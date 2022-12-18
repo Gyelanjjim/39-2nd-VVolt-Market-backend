@@ -22,10 +22,24 @@
 
 ## 📌 VVolt Martket Features
 
-- 🟢 `한솔 BE` - DB구축, 카카오API 로그인(POST), 주문목록(GET), 제품 리스트 (GET), 제품 detailed (GET)
+- 🟢 `한솔 BE` - DB구축, 카카오API 로그인(POST), 상점 정보(POST) 주문목록(GET), 제품 리스트 (GET), 제품 detailed (GET)
 - 🟢 `상욱 BE` - DB구축, 결제 정보 (POST), 토스페이 API, 후기 (GET/POST/PATCH/DELETE), 찜 (GET/POST/DELETE), 팔로워 & 팔로잉 (GET/POST/DELETE)
-- 🟢 `철진 BE` - DB구축, 상점 정보 (GET/POST/PUT), AWS S3 이미지 등록 (POST/PUT), 찜 (GET/POST/DELETE), 팔로워 & 팔로잉 (GET/POST/DELETE)
-
+- 🟢 `철진 BE`
+  - (공동) VVolt Market 기획 
+  - (공동) DB 마이그레이션 파일 및 데이터 구축
+  - 상점 정보 
+    - jwt로 불러온 본인 상점과 path파라미터로 불러온 상점의 정보 조회(GET)
+    - 하나의 엔드포인트로 개별 상점 정보(상점명, 이미지, 소개글) 수정(PUT) 
+    - AWS S3 이미지 : single()과 PUT으로 상점 프로필 이미지 변경(PUT)
+  - 상품 정보
+    - 상품 정보 등록(POST)
+    - AWS S3 이미지 : array()와 POST로 여러 상품 이미지 등록(POST)
+  - 찜 
+    - jwt로 인증한 본인의 찜 개수 조회(GET)
+    - 하나의 버튼으로 찜 등록 및 해제 기능 (POST/DELETE)
+  - 팔로워 & 팔로잉 
+    - jwt로 인증한 본인이 팔로잉 한 개수, 나를 팔로우한 수 조회(GET)
+    - 하나의 버튼으로 팔로우 등록 및 해제 기능 (POST/DELETE)
 - 🔵 `지민 FE` - 소셜로그인 페이지, 상품등록 페이지
 - 🔵 `동섭 FE` - 상품리스트 페이지, 상점페이지, footer
 - 🔵 `효원 FE` - 회원가입 페이지, 결제 페이지
