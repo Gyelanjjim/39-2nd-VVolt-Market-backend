@@ -14,6 +14,10 @@ const createApp = () => {
   app.use(routes);
   app.use(globalErrorHandler);
 
+  app.get("/ping", (req,res) =>{
+    res.status(200).json({ message : "pong" })
+  })
+
   return app;
 };
 
