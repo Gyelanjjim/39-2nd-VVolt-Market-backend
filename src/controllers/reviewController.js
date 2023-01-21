@@ -4,8 +4,9 @@ const createReviewByusername = async (req, res) => {
   try {
     const [user] = req.userId;
     const { productId, contents, rating } = req.body;
-    // if ( !productId || !userId || !contents || !rating ) {
-    //     return res.status(404).json({ message: 'Key Error' });
+    if (!productId || !userId || !contents || !rating) {
+      return res.status(404).json({ message: 'Key Error' });
+    }
     const result = await reviewService.createReviewByusername(
       productId,
       user.id,
@@ -14,7 +15,6 @@ const createReviewByusername = async (req, res) => {
     );
     return res.status(201).json({ message: 'Success!!!!' });
   } catch (err) {
-    console.log(err);
     return res.status(err.statusCode || 500).json({ message: err.message });
   }
 };

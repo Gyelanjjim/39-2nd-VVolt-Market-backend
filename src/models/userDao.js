@@ -14,7 +14,6 @@ const getUserBysocialId = async (socialId) => {
 };
 
 const insertSocialId = async (socialId, name) => {
-  console.log(name);
   await appDataSource.query(
     `
     INSERT INTO users (

@@ -15,7 +15,6 @@ const createLikeByUsername = async (req, res) => {
     );
     return res.status(201).json({ message: 'Success!!!!' });
   } catch (err) {
-    console.log(err);
     return res.status(err.statusCode || 500).json({ message: err.message });
   }
 };

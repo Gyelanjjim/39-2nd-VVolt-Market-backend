@@ -18,7 +18,6 @@ const postFollow = async (userId, followeeId) => {
 
   const followData = await followDao.getFollow(userId, followeeId);
   const EXISTS = Number(followData?.existence);
-  console.log(EXISTS);
   if (EXISTS === 1) {
     await followDao.deleteFollow(userId, followeeId);
   } else {

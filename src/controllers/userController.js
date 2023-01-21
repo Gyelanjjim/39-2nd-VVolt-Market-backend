@@ -56,15 +56,7 @@ const userUpdate = catchAsync(async (req, res) => {
   const { nickname, description, address, latitude, longitude } = req.body;
 
   let user_image = '';
-  if (req.file) {
-    user_image = req.file.location;
-  }
-
-  // if (!userId || !nickname && !user_image && `${description}`=== "undefined" && !address && !latitude && !longitude) {
-  //   const err = new Error("KEY_ERROR");
-  //   err.statusCode = 400;
-  //   throw err;
-  // }
+  if (req.file) user_image = req.file.location;
 
   await userService.userUpdate(
     userId,

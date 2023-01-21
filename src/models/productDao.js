@@ -117,7 +117,6 @@ const getStoreReivew = async (productId) => {
 };
 
 const getStoreProductList = async (storeId) => {
-  console.log(storeId);
   return await appDataSource.query(
     `
       SELECT DISTINCT

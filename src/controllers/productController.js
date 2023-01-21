@@ -73,7 +73,6 @@ const createProduct = catchAsync(async (req, res) => {
 const uploadImage = catchAsync(async (req, res) => {
   const image_url = [];
   await req.files;
-  console.log(req.files);
   for (let i = 0; i < req.files.length; i++) {
     image_url.push(req.files[i].location);
   }
