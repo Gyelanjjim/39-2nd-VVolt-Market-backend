@@ -2,8 +2,7 @@ const { appDataSource } = require('./dataSource');
 
 const getProductList = async (builders, sort) => {
   return await appDataSource.query(
-    `
-        SELECT DISTINCT
+    `SELECT DISTINCT
         p.id productId,
         p.name productName,
         p.price productPrice,
@@ -32,33 +31,32 @@ const getProductList = async (builders, sort) => {
 
 const getproductDetail = async (productId) => {
   return await appDataSource.query(
-    `
-        SELECT DISTINCT
-          p.name productName,
-          p.price productPrice,
-          p.description productDesc,
-          p.product_status_id productStatusId,
-          p.location location,
-          p.latitude lat,
-          p.longitude lng,
-          pi.images,
-          (SELECT
-            COUNT(l.id) Count
-            FROM likes l
-            WHERE l.product_id = p.id
-          ) likeCount
-          FROM products p
-          INNER JOIN users AS u ON u.id = p.user_id
-          LEFT JOIN (
-            SELECT 
-              product_id,
-              JSON_ARRAYAGG(
-                image_url
-              ) as images
-            FROM product_images
-            GROUP BY product_id
-          ) pi ON p.id = pi.product_id
-          WHERE p.id = ?  
+    `SELECT DISTINCT
+        p.name productName,
+        p.price productPrice,
+        p.description productDesc,
+        p.product_status_id productStatusId,
+        p.location location,
+        p.latitude lat,
+        p.longitude lng,
+        pi.images,
+        (SELECT
+          COUNT(l.id) Count
+          FROM likes l
+          WHERE l.product_id = p.id
+        ) likeCount
+      FROM products p
+      INNER JOIN users AS u ON u.id = p.user_id
+      LEFT JOIN (
+        SELECT 
+          product_id,
+          JSON_ARRAYAGG(
+            image_url
+          ) as images
+        FROM product_images
+        GROUP BY product_id
+      ) pi ON p.id = pi.product_id
+      WHERE p.id = ?  
       `,
     [productId]
   );
@@ -149,9 +147,20 @@ const getStoreProductList = async (storeId) => {
   );
 };
 
-const createProduct = async (name, description, price, location, latitude, longitude, product_status_id, category_id, user_id, image_url) => {
-    const product = await appDataSource.query(
-        `    
+const createProduct = async (
+  name,
+  description,
+  price,
+  location,
+  latitude,
+  longitude,
+  product_status_id,
+  category_id,
+  user_id,
+  image_url
+) => {
+  const product = await appDataSource.query(
+    `    
         INSERT INTO products (
           name,
           description,
@@ -174,51 +183,60 @@ const createProduct = async (name, description, price, location, latitude, longi
           ?
         );
         `,
-        [name, description, price, location, latitude, longitude, product_status_id, category_id, user_id]
-    );
-    
-    const imageBulk = image_url.map((image_url) => {
-      return `(${product.insertId}, "${image_url}")`;
-    })
-    const values = imageBulk.join(", "); 
-    
-    const productImages = await appDataSource.query(
-        `INSERT INTO product_images (
+    [
+      name,
+      description,
+      price,
+      location,
+      latitude,
+      longitude,
+      product_status_id,
+      category_id,
+      user_id,
+    ]
+  );
+
+  const imageBulk = image_url.map((image_url) => {
+    return `(${product.insertId}, "${image_url}")`;
+  });
+  const values = imageBulk.join(', ');
+
+  const productImages = await appDataSource.query(
+    `INSERT INTO product_images (
             product_id, 
             image_url
         ) VALUES ${values}`
-    );
-}
+  );
+};
 
 const productUpdate = async (setClause, imageBulks, productId) => {
-    const product = await appDataSource.query(
-        `
+  const product = await appDataSource.query(
+    `
         UPDATE products
         ${setClause}
         WHERE id = ?;
         `,
-        [productId]
-    );
-    
-    const productImageDelete = await appDataSource.query(
-        `
+    [productId]
+  );
+
+  const productImageDelete = await appDataSource.query(
+    `
         DELETE FROM product_images
         WHERE product_id = ?
         `,
-        [productId]
-    );
+    [productId]
+  );
 
-    const productImageAdd = await appDataSource.query(
-        `
+  const productImageAdd = await appDataSource.query(
+    `
         INSERT INTO product_images ( 
             product_id, 
             image_url 
         ) VALUES ${imageBulks}
         `
-    );
-    return productImageAdd;
+  );
+  return productImageAdd;
 };
-
 
 const getProductId = async (productId) => {
   try {
@@ -245,7 +263,7 @@ module.exports = {
   getStoreReivew,
   getStoreInfor,
   getStoreProductList,
-  createProduct, 
+  createProduct,
   productUpdate,
-  getProductId
+  getProductId,
 };

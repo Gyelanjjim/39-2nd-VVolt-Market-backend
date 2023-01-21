@@ -1,5 +1,5 @@
 const productService = require('../services/productService');
-const likeService = require('../services/likeService')
+const likeService = require('../services/likeService');
 const { catchAsync } = require('../utils/Error');
 
 const getAllProducts = catchAsync(async (req, res) => {
@@ -10,8 +10,8 @@ const getAllProducts = catchAsync(async (req, res) => {
 const getProductDetail = catchAsync(async (req, res) => {
   const { productId } = req.params;
   const [user] = req.userId;
-  const productDetailData  = await productService.getProductDetail(productId);
-  const isLike = await likeService.getLike(user.id, productId)
+  const productDetailData = await productService.getProductDetail(productId);
+  const isLike = await likeService.getLike(user.id, productId);
   res.status(200).json({ productDetailData, isLike });
 });
 
@@ -22,48 +22,120 @@ const getStoreProductList = catchAsync(async (req, res) => {
 });
 
 const createProduct = catchAsync(async (req, res) => {
-    const { name, description, price, location, latitude, longitude, product_status_id, category_id, image_url} = req.body;
-    const user_id = req.userId[0].id;
+  const {
+    name,
+    description,
+    price,
+    location,
+    latitude,
+    longitude,
+    product_status_id,
+    category_id,
+    image_url,
+  } = req.body;
+  const user_id = req.userId[0].id;
 
-    if (!name || !description || !price || !location || !latitude || !longitude || !product_status_id || !category_id || !user_id || !image_url) {
-        const err = new Error("KEY_ERROR");
-        err.statusCode = 400;
-        throw err;
-    }
+  if (
+    !name ||
+    !description ||
+    !price ||
+    !location ||
+    !latitude ||
+    !longitude ||
+    !product_status_id ||
+    !category_id ||
+    !user_id ||
+    !image_url
+  ) {
+    const err = new Error('KEY_ERROR');
+    err.statusCode = 400;
+    throw err;
+  }
 
-    await productService.createProduct(name, description, price, location, latitude, longitude, product_status_id, category_id, user_id, image_url);
-  
-    return res.status(201).json({
-        message: "POST_SUCCESS",
-    });
+  await productService.createProduct(
+    name,
+    description,
+    price,
+    location,
+    latitude,
+    longitude,
+    product_status_id,
+    category_id,
+    user_id,
+    image_url
+  );
+
+  return res.status(201).json({
+    message: 'POST_SUCCESS',
+  });
 });
 
 const uploadImage = catchAsync(async (req, res) => {
-    const image_url = [];
-    await req.files;
-    console.log(req.files)
-    for(let i=0; i<req.files.length; i++){
-        image_url.push(req.files[i].location);
-    }
-    res.status(200).json({ "image_url" : image_url });
-})
-
-const productUpdate = catchAsync(async (req, res) => {
-    const { productId } = req.params;
-    const { name, description, price, location, latitude, longitude, product_status_id, category_id, image_url } = req.body;
-    const userId = req.userId;
-
-    if (!productId || !name || !description || !price || !location || !latitude || !longitude || !product_status_id || !category_id || !image_url || !userId) {
-        const err = new Error("KEY_ERROR");
-        err.statusCode = 400;
-        throw err;
-    }
-    
-    await productService.productUpdate( productId, name, description, price, location, latitude, longitude, product_status_id, category_id, image_url);
-
-    return res.status(200).json({
-      message: "UPDATE_SUCCESS",
-    });
+  const image_url = [];
+  await req.files;
+  console.log(req.files);
+  for (let i = 0; i < req.files.length; i++) {
+    image_url.push(req.files[i].location);
+  }
+  res.status(200).json({ image_url: image_url });
 });
 
-module.exports = { getAllProducts, getProductDetail, getStoreProductList, createProduct, productUpdate, uploadImage };
+const productUpdate = catchAsync(async (req, res) => {
+  const { productId } = req.params;
+  const {
+    name,
+    description,
+    price,
+    location,
+    latitude,
+    longitude,
+    product_status_id,
+    category_id,
+    image_url,
+  } = req.body;
+  const userId = req.userId;
+
+  if (
+    !productId ||
+    !name ||
+    !description ||
+    !price ||
+    !location ||
+    !latitude ||
+    !longitude ||
+    !product_status_id ||
+    !category_id ||
+    !image_url ||
+    !userId
+  ) {
+    const err = new Error('KEY_ERROR');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  await productService.productUpdate(
+    productId,
+    name,
+    description,
+    price,
+    location,
+    latitude,
+    longitude,
+    product_status_id,
+    category_id,
+    image_url
+  );
+
+  return res.status(200).json({
+    message: 'UPDATE_SUCCESS',
+  });
+});
+
+module.exports = {
+  getAllProducts,
+  getProductDetail,
+  getStoreProductList,
+  createProduct,
+  productUpdate,
+  uploadImage,
+};
