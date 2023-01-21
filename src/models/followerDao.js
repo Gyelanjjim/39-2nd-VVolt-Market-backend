@@ -1,34 +1,32 @@
-const { appDataSource } = require("./dataSource")
+const { appDataSource } = require('./dataSource');
 
 const createFollowByUsername = async (follower, followee) => {
-	
-	const createFollower = await appDataSource.query(
+  const createFollower = await appDataSource.query(
     `INSERT INTO Follow (
         follower,
         followee
     ) VALUES (? ,?);
     `,
     [follower, followee]
-    ); 
-	return createFollower;
-
+  );
+  return createFollower;
 };
 
 const getFollowByUsername = async (userId) => {
-
-	const user = await appDataSource.query(`
-	select
-	u.nickname as usernickname,
-	u.id,
-  u.user_image,
-	f.follower as user_following
-	from users u
-	LEFT JOIN follow f ON u.id=f.followee
-	WHERE f.follower= ?
-  `, [userId]
-	)
-	return user
-}
+  const user = await appDataSource.query(
+    `SELECT
+	    u.nickname as usernickname,
+	    u.id,
+      u.user_image,
+	    f.follower as user_following
+	  FROM users u
+	  LEFT JOIN follow f ON u.id=f.followee
+	  WHERE f.follower= ?
+  `,
+    [userId]
+  );
+  return user;
+};
 
 const getFollow = async (userId, followeeId) => {
   const [followData] = await appDataSource.query(
@@ -45,8 +43,7 @@ const getFollow = async (userId, followeeId) => {
 
 const createFollow = async (userId, followeeId) => {
   await appDataSource.query(
-    `
-      INSERT INTO follow(
+    `INSERT INTO follow(
         follower,
         followee)
       VALUES(?,?);
@@ -57,8 +54,7 @@ const createFollow = async (userId, followeeId) => {
 
 const deleteFollow = async (userId, followeeId) => {
   await appDataSource.query(
-    `
-      DELETE
+    `DELETE
       FROM follow f
       WHERE f.follower = ? and f.followee = ?
       `,
@@ -67,10 +63,9 @@ const deleteFollow = async (userId, followeeId) => {
 };
 
 module.exports = {
-    getFollowByUsername,
-    createFollowByUsername,
-	  deleteFollow,
-    getFollow, 
-    createFollow
-}
-
+  getFollowByUsername,
+  createFollowByUsername,
+  deleteFollow,
+  getFollow,
+  createFollow,
+};

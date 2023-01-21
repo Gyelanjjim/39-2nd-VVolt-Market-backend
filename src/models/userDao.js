@@ -14,7 +14,6 @@ const getUserBysocialId = async (socialId) => {
 };
 
 const insertSocialId = async (socialId, name) => {
-  console.log(name);
   await appDataSource.query(
     `
     INSERT INTO users (
@@ -37,10 +36,10 @@ const insertUserData = async (
     `
     UPDATE users
     SET
-      nickname =?,
-      address =?,
-      latitude=?,
-      longitude= ?
+      nickname = ?,
+      address = ?,
+      latitude = ?,
+      longitude = ?
     WHERE id = ?
     `,
     [nickname, address, latitude, longitude, userId]
@@ -62,8 +61,8 @@ const getUserById = async (userId) => {
 };
 
 const getUserDetail = async (userId) => {
-    const userInfo = await appDataSource.query(
-        `
+  const userInfo = await appDataSource.query(
+    `
         SELECT
             u.id as sellerId,
             u.nickname as sellerName,
@@ -110,34 +109,45 @@ const getUserDetail = async (userId) => {
             WHERE o.user_id = ?) as orderNum         
         FROM users u
         WHERE u.id = ?;
-        `
-        ,[ userId, userId, userId, userId, userId, userId, userId, userId, userId, userId]
-        );
-        return userInfo;
+        `,
+    [
+      userId,
+      userId,
+      userId,
+      userId,
+      userId,
+      userId,
+      userId,
+      userId,
+      userId,
+      userId,
+    ]
+  );
+  return userInfo;
 };
 
 const getUserByNickname = async (nickname) => {
-    const [user] = await appDataSource.query(
-      `
+  const [user] = await appDataSource.query(
+    `
         SELECT *
         FROM users u
         WHERE u.nickname = ?;
       `,
-      [nickname]
-    );
-    return user;
-  };
+    [nickname]
+  );
+  return user;
+};
 
 const userUpdate = async (userId, setClause) => {
-    const userUpdating = await appDataSource.query(
-      `
+  const userUpdating = await appDataSource.query(
+    `
       UPDATE users
       ${setClause}
       WHERE users.id = ?;
       `,
-      [userId]
-    );
-    return userUpdating;
+    [userId]
+  );
+  return userUpdating;
 };
 
 module.exports = {
@@ -145,5 +155,7 @@ module.exports = {
   insertUserData,
   insertSocialId,
   getUserById,
-  getUserDetail, getUserByNickname, userUpdate
+  getUserDetail,
+  getUserByNickname,
+  userUpdate,
 };
