@@ -20,8 +20,10 @@ const postFollow = async (userId, followeeId) => {
   const EXISTS = Number(followData?.existence);
   if (EXISTS === 1) {
     await followDao.deleteFollow(userId, followeeId);
+    return 1;
   } else {
     await followDao.createFollow(userId, followeeId);
+    return 0;
   }
 };
 

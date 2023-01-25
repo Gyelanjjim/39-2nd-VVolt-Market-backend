@@ -32,8 +32,10 @@ const postLike = async (userId, productId) => {
   const EXISTS = Number(likeData?.existence);
   if (EXISTS === 1) {
     await likeDao.deleteLike(userId, productId);
+    return 1;
   } else {
     await likeDao.createLikeByUsername(userId, productId);
+    return 0;
   }
 };
 

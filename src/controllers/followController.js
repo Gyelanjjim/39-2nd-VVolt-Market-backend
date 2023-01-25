@@ -22,7 +22,11 @@ const postFollow = async (req, res) => {
   const [user] = req.userId;
 
   const followData = await followService.postFollow(user.id, followeeId);
-  return res.status(201).send();
+  if (followData) {
+    res.status(201).send();
+  } else {
+    res.status(204).send();
+  }
 };
 
 module.exports = {

@@ -5,6 +5,6 @@ const { checkAuth } = require('../utils/checkAuth');
 
 likeRouter.post('', likeController.createLikeByUsername);
 likeRouter.get('/:userId', likeController.getLikeByusername);
-likeRouter.post('/:productId', checkAuth, likeController.deleteLike);
+likeRouter.post('/:productId', checkAuth, likeController.postLike);
 
 module.exports = { likeRouter };

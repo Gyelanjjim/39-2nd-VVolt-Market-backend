@@ -25,16 +25,20 @@ const getLikeByusername = async (req, res) => {
   res.status(200).json({ Likes_list: LikeReview });
 };
 
-const deleteLike = async (req, res) => {
+const postLike = async (req, res) => {
   const { productId } = req.params;
   const [user] = req.userId;
 
   const result = await likeService.postLike(user.id, productId);
-  return res.status(201).send();
+  if (result) {
+    res.status(201).send();
+  } else {
+    res.status(204).send();
+  }
 };
 
 module.exports = {
   getLikeByusername,
   createLikeByUsername,
-  deleteLike,
+  postLike,
 };

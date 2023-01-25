@@ -76,7 +76,7 @@ const uploadImage = catchAsync(async (req, res) => {
   for (let i = 0; i < req.files.length; i++) {
     image_url.push(req.files[i].location);
   }
-  res.status(200).json({ image_url: image_url });
+  res.status(201).json({ image_url: image_url });
 });
 
 const productUpdate = catchAsync(async (req, res) => {
